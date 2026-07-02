@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Classificateur Maladies Olivier</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; text-align: center; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 8px; font-size: 20px; font-weight: bold; }
+        .healthy { background-color: #d4edda; color: #155724; }
+        .malade { background-color: #f8d7da; color: #721c24; }
+        .logout { position: absolute; top: 20px; right: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+        img.thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <a href="/logout" class="logout">Déconnexion</a>
+    <h1>🫒 Classificateur de maladies de l'olivier</h1>
+    <p>Charge une image d'une feuille d'olivier pour obtenir une prédiction</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <br><br>
+        <button type="submit">Analyser</button>
+    </form>
+
+    {% if prediction %}
+        <div class="result {{ prediction }}">
+            Résultat : {{ prediction }}
+        </div>
+    {% endif %}
+
+    <h2>📋 Historique</h2>
+    {% if history %}
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Résultat</th>
+            <th>Date</th>
+        </tr>
+        {% for item in history %}
+        <tr>
+            <td><img class="thumb" src="{{ url_for('static', filename='') }}../uploads/{{ item.filename }}"></td>
+            <td>{{ item.prediction }}</td>
+            <td>{{ item.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Aucune analyse pour le moment.</p>
+    {% endif %}
+</body>
+</html>

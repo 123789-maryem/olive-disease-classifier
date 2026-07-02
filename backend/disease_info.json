@@ -1,0 +1,27 @@
+{
+  "Fugamine": {
+    "name": "Fumagine",
+    "description": "Champignon noir qui se développe sur le miellat sécrété par des insectes (cochenilles, pucerons). Forme un dépôt noirâtre et poudreux sur les feuilles, réduisant la photosynthèse.",
+    "treatment": "Traiter d'abord les insectes responsables (cochenilles, pucerons) avec un insecticide adapté. Nettoyer ensuite les feuilles avec une solution savonneuse ou un fongicide léger à base de cuivre."
+  },
+  "Tuberculose": {
+    "name": "Tuberculose de l'olivier",
+    "description": "Maladie bactérienne causée par Pseudomonas savastanoi, provoque la formation de tumeurs (galles) sur les branches, le tronc et parfois les racines de l'olivier.",
+    "treatment": "Tailler et brûler les parties atteintes, désinfecter les outils de taille entre chaque coupe, et appliquer un traitement à base de cuivre après la taille pour éviter la réinfection."
+  },
+  "Xylella fastidiosa": {
+    "name": "Xylella fastidiosa",
+    "description": "Bactérie transmise par des insectes vecteurs (cicadelles) qui colonise les vaisseaux de sève de l'arbre, bloquant la circulation de l'eau et des nutriments, entraînant un dessèchement rapide et souvent fatal.",
+    "treatment": "Aucun traitement curatif connu à ce jour. L'arrachage des arbres infectés est obligatoire dans de nombreuses régions. La prévention passe par la lutte contre les insectes vecteurs et la surveillance des zones à risque."
+  },
+  "la mouche de l'olive": {
+    "name": "Mouche de l'olive",
+    "description": "Insecte ravageur (Bactrocera oleae) qui pond ses œufs dans les olives. Les larves creusent des galeries dans la pulpe du fruit, le rendant impropre à la récolte.",
+    "treatment": "Installer des pièges à phéromones pour surveiller et réduire la population. Appliquer un traitement à base de kaolin ou de spinosad au moment critique de ponte. Récolter les olives précocement pour limiter les dégâts."
+  },
+  "verticilliose": {
+    "name": "Verticilliose",
+    "description": "Champignon du sol (Verticillium dahliae) qui obstrue les vaisseaux conducteurs de l'arbre, provoquant un flétrissement et un dessèchement progressif des rameaux et des feuilles.",
+    "treatment": "Aucun traitement chimique curatif efficace. Éliminer et brûler les branches atteintes, éviter la sur-irrigation, désinfecter les outils de taille, et privilégier des variétés résistantes lors d'une replantation."
+  }
+}

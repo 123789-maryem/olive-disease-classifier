@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/dist/
+
+# Uploads w history (données شخصية)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
