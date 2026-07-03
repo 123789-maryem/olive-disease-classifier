@@ -4,21 +4,29 @@ import axios from "axios";
 function Classifier({ onLogout }) {
   const [file, setFile] = useState(null);
   const [prediction, setPrediction] = useState(null);
-  const [history, setHistory] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedDisease, setSelectedDisease] = useState("");
+  const [addedMessage, setAddedMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fetchHistory = async () => {
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:5000/api/categories")
+      .then((res) => setCategories(res.data.filter((c) => c !== "healthy")));
+  }, []);
+
+  const addToDataset = async (category) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("category", category);
+
     try {
-      const res = await axios.get("http://127.0.0.1:5000/api/history");
-      setHistory(res.data);
+      await axios.post("http://127.0.0.1:5000/api/dataset/add", formData);
+      setAddedMessage("Image ajoutee a la galerie avec succes !");
     } catch (err) {
-      console.error(err);
+      setAddedMessage("Erreur lors de l ajout a la galerie.");
     }
   };
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,29 +36,43 @@ function Classifier({ onLogout }) {
     formData.append("image", file);
 
     setLoading(true);
+    setAddedMessage("");
+    setSelectedDisease("");
     try {
       const res = await axios.post("http://127.0.0.1:5000/api/predict", formData);
       setPrediction(res.data.prediction);
-      fetchHistory();
+
+      if (res.data.prediction === "healthy") {
+        await addToDataset("healthy");
+      }
     } catch (err) {
       console.error(err);
     }
     setLoading(false);
   };
 
+  const handleConfirmDisease = () => {
+    if (!selectedDisease) return;
+    addToDataset(selectedDisease);
+  };
+
   return (
     <div style={{ maxWidth: 700, margin: "40px auto", textAlign: "center" }}>
       <button onClick={onLogout} style={{ float: "right" }}>
-        Déconnexion
+        Deconnexion
       </button>
-      <h1>🫒 Classificateur de maladies de l'olivier</h1>
-      <p>Charge une image d'une feuille d'olivier pour obtenir une prédiction</p>
+      <h1>Classificateur de maladies de l olivier</h1>
+      <p>Charge une image d une feuille d olivier pour obtenir une prediction</p>
 
       <form onSubmit={handleSubmit}>
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            setPrediction(null);
+            setAddedMessage("");
+          }}
           required
         />
         <br />
@@ -70,43 +92,32 @@ function Classifier({ onLogout }) {
             color: prediction === "healthy" ? "#155724" : "#721c24",
           }}
         >
-          Résultat : {prediction}
+          Resultat : {prediction}
         </div>
       )}
 
-      <h2>📋 Historique</h2>
-      {history.length > 0 ? (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ border: "1px solid #ddd", padding: 8 }}>Image</th>
-              <th style={{ border: "1px solid #ddd", padding: 8 }}>Résultat</th>
-              <th style={{ border: "1px solid #ddd", padding: 8 }}>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((item, i) => (
-              <tr key={i}>
-                <td style={{ border: "1px solid #ddd", padding: 8 }}>
-                  <img
-                    src={`http://127.0.0.1:5000/uploads/${item.filename}`}
-                    alt=""
-                    style={{ width: 60, height: 60, objectFit: "cover" }}
-                  />
-                </td>
-                <td style={{ border: "1px solid #ddd", padding: 8 }}>
-                  {item.prediction}
-                </td>
-                <td style={{ border: "1px solid #ddd", padding: 8 }}>
-                  {item.date}
-                </td>
-              </tr>
+      {prediction === "malade" && !addedMessage && (
+        <div style={{ marginTop: 20, padding: 15, backgroundColor: "#fff5f5", borderRadius: 8 }}>
+          <p><strong>Quel type de maladie est-ce</strong></p>
+          <select
+            value={selectedDisease}
+            onChange={(e) => setSelectedDisease(e.target.value)}
+            style={{ padding: 10, width: "80%" }}
+          >
+            <option value="">-- Choisir la maladie --</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Aucune analyse pour le moment.</p>
+          </select>
+          <br />
+          <br />
+          <button onClick={handleConfirmDisease}>Confirmer et ajouter a la galerie</button>
+        </div>
       )}
+
+      {addedMessage && <p style={{ marginTop: 15 }}>{addedMessage}</p>}
     </div>
   );
 }

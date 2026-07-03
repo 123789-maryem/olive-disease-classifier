@@ -171,6 +171,32 @@ HEALTHY_INFO = {
 @app.route("/api/dataset/healthy/info", methods=["GET"])
 def get_healthy_info():
     return jsonify(HEALTHY_INFO)
-    
+@app.route("/api/dataset/add", methods=["POST"])
+def add_to_dataset():
+    file = request.files.get("image")
+    category = request.form.get("category")  # "healthy" ولا اسم المرض
+
+    if not file or not category:
+        return jsonify({"error": "Image ou catégorie manquante"}), 400
+
+    if category == "healthy":
+        target_dir = os.path.join(DATASET_DIR, "healthy")
+    else:
+        target_dir = os.path.join(DATASET_DIR, "malade", category)
+
+    os.makedirs(target_dir, exist_ok=True)
+
+    filename = file.filename
+    path = os.path.join(target_dir, filename)
+    file.save(path)
+
+    return jsonify({"success": True, "filename": filename, "category": category})
+
+
+@app.route("/api/categories", methods=["GET"])
+def get_categories():
+    disease_info = load_disease_info()
+    categories = ["healthy"] + list(disease_info.keys())
+    return jsonify(categories)   
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
