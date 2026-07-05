@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Login from "./components/Login";
-import Classifier from "./components/Classifier";
+import Login from "./components/login";
+import Classifier from "./components/classifier";
 import Gallery from "./components/Gallery";
 import AddToDataset from "./components/AddToDataset";
+import History from "./components/History";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -35,11 +36,15 @@ function App() {
         <button onClick={() => setActiveTab("ajouter")} style={tabStyle("ajouter")}>
           Ajouter au dataset
         </button>
+        <button onClick={() => setActiveTab("historique")} style={tabStyle("historique")}>
+          Historique
+        </button>
       </div>
 
       {activeTab === "analyser" && <Classifier onLogout={() => setLoggedIn(false)} />}
       {activeTab === "galerie" && <Gallery onLogout={() => setLoggedIn(false)} />}
       {activeTab === "ajouter" && <AddToDataset onLogout={() => setLoggedIn(false)} />}
+      {activeTab === "historique" && <History onLogout={() => setLoggedIn(false)} />}
     </div>
   );
 }

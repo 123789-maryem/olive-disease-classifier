@@ -1,5 +1,35 @@
 [
   {
+    "filename": "20260705_161717_photo27.jpeg",
+    "prediction": "healthy",
+    "date": "05/07/2026 16:17"
+  },
+  {
+    "filename": "20260704_174021_WhatsApp Image 2026-07-04 at 17.39.59.jpeg",
+    "prediction": "malade",
+    "date": "04/07/2026 17:40"
+  },
+  {
+    "filename": "20260704_173833_photo17.jpeg",
+    "prediction": "malade",
+    "date": "04/07/2026 17:38"
+  },
+  {
+    "filename": "20260704_173810_photo3.jpeg",
+    "prediction": "malade",
+    "date": "04/07/2026 17:38"
+  },
+  {
+    "filename": "20260704_172745_photo6.jpeg",
+    "prediction": "malade",
+    "date": "04/07/2026 17:27"
+  },
+  {
+    "filename": "20260704_001554_photo5.jpeg",
+    "prediction": "malade",
+    "date": "04/07/2026 00:15"
+  },
+  {
     "filename": "20260703_205606_photo20.jpeg",
     "prediction": "malade",
     "date": "03/07/2026 20:56"
