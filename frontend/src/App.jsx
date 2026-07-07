@@ -12,17 +12,18 @@ function App() {
   if (!loggedIn) {
     return <Login onLogin={() => setLoggedIn(true)} />;
   }
-
-  const tabStyle = (tab) => ({
-    padding: "10px 20px",
-    marginRight: 10,
-    fontWeight: activeTab === tab ? "bold" : "normal",
-    backgroundColor: activeTab === tab ? "#4a7c3f" : "#eee",
-    color: activeTab === tab ? "white" : "black",
-    border: "none",
-    borderRadius: 5,
-    cursor: "pointer",
-  });
+function tabStyle(tab) {
+    return ({
+      padding: "10px 20px",
+      marginRight: 10,
+      fontWeight: activeTab === tab ? "bold" : "normal",
+      backgroundColor: activeTab === tab ? "#4a7c3f" : "#eee",
+      color: activeTab === tab ? "white" : "black",
+      border: "none",
+      borderRadius: 5,
+      cursor: "pointer",
+    });
+  }
 
   return (
     <div>

@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)  # bach React (port mختلف) يقدر يتكلم مع Flask
+CORS(app)  
 
 model = joblib.load("model.pkl")
 
