@@ -1,29 +1,43 @@
 import { useState } from "react";
-import Login from "./components/login";
-import Classifier from "./components/classifier";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Classifier from "./components/Classifier";
 import Gallery from "./components/Gallery";
 import AddToDataset from "./components/AddToDataset";
 import History from "./components/History";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const [activeTab, setActiveTab] = useState("analyser");
 
   if (!loggedIn) {
-    return <Login onLogin={() => setLoggedIn(true)} />;
+    if (showRegister) {
+      return (
+        <Register
+          onRegisterSuccess={() => setShowRegister(false)}
+          onBackToLogin={() => setShowRegister(false)}
+        />
+      );
+    }
+    return (
+      <Login
+        onLogin={() => setLoggedIn(true)}
+        onShowRegister={() => setShowRegister(true)}
+      />
+    );
   }
-function tabStyle(tab) {
-    return ({
-      padding: "10px 20px",
-      marginRight: 10,
-      fontWeight: activeTab === tab ? "bold" : "normal",
-      backgroundColor: activeTab === tab ? "#4a7c3f" : "#eee",
-      color: activeTab === tab ? "white" : "black",
-      border: "none",
-      borderRadius: 5,
-      cursor: "pointer",
-    });
-  }
+
+  const tabStyle = (tab) => ({
+    padding: "10px 20px",
+    marginRight: 10,
+    fontWeight: activeTab === tab ? "bold" : "normal",
+    backgroundColor: activeTab === tab ? "#4a7c3f" : "#eee",
+    color: activeTab === tab ? "white" : "black",
+    border: "none",
+    borderRadius: 5,
+    cursor: "pointer",
+  });
 
   return (
     <div>

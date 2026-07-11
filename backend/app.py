@@ -7,6 +7,27 @@ import os
 import json
 from datetime import datetime
 
+import sqlite3
+
+DB_FILE = "users.db"
+
+
+def init_db():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
+init_db()
+
 app = Flask(__name__)
 CORS(app)  
 
@@ -15,9 +36,6 @@ model = joblib.load("model.pkl")
 UPLOAD_FOLDER = "uploads"
 HISTORY_FILE = "history.json"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-USERNAME = "admin"
-PASSWORD = "olive2026"
 
 
 def load_history():
@@ -56,12 +74,40 @@ def extract_features(image_path):
     return features
 
 
+@app.route("/api/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Nom d'utilisateur et mot de passe requis"}), 400
+
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    try:
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True})
+    except sqlite3.IntegrityError:
+        conn.close()
+        return jsonify({"error": "Ce nom d'utilisateur existe deja"}), 409
+
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
-    if username == USERNAME and password == PASSWORD:
+
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+    user = c.fetchone()
+    conn.close()
+
+    if user:
         return jsonify({"success": True})
     return jsonify({"success": False, "error": "Identifiants incorrects"}), 401
 
